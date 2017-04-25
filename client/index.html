@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MVP</title>
+</head>
+<meta charset="utf-8">
+<body>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+
+	<H1>POKEMON INFO</H1>
+
+		<div ng-app="myMVP" ng-controller="myCtrl"> 
+      <input ng-model="pokemonName">
+      <button ng-click='showDetails()'>Search</button>
+			<table>
+  			<tr ng-repeat="(key, value) in pokemonInfo">
+	    		<td>{{key}}</td>
+	    		<td>{{value}}</td>
+  			</tr>
+			</table>
+		</div>
+
+	<script>
+		var app = angular.module('myMVP',[]);
+		app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {			
+ 			$scope.showDetails = function() {
+ 				var pokemon = $scope.pokemonName;
+ 				console.log(pokemon);
+			    $http({
+			      method: 'POST',
+			      url: 'http://localhost:8888/',
+				  headers: {'Content-Type': 'application/json'},
+			      data: {data: pokemon}
+			    }).then(function(response){
+			   	console.log(response.data);			   	
+			    $scope.pokemonInfo = response.data;
+			   });
+			}
+		}]);
+
+
+
+
+
+
+
+
+
+		// app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
+		// 	$scope.showDetails = function() {
+		//     $http.post('http://localhost:8888/', JSON.stringify($scope.pokemonName)).then(function(response){
+		//     	console.log(response);
+		//     }, function(error) {
+		//     	console.log(error);
+		//     });
+		//   }
+	</script>
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+		
+
+
