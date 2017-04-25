@@ -1,0 +1,41 @@
+h1 {
+	color: red;
+}
+div {
+	text-align: center;
+}
+
+table {
+	
+	text-align: center;
+	margin: 0 auto;
+}
+
+td {
+	border-style: solid; 
+	border-width: 1px;
+	height:30px;
+	
+}
+
+#td1 {
+	width: 200px;
+}
+
+#td2 {
+	width: 300px
+}
+
+input {
+	width: 200px;
+	height: 30px;
+	font-size: 1em;
+}
+
+button {
+	width: 70px;
+	height: 33px;
+	font-size: 1em;
+	
+
+}

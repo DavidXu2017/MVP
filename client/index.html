@@ -2,21 +2,27 @@
 <html>
 <head>
 	<title>MVP</title>
+	<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
 <meta charset="utf-8">
 <body>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
 
-	<H1>POKEMON INFO</H1>
+	
 
-		<div ng-app="myMVP" ng-controller="myCtrl"> 
-      <input ng-model="pokemonName">
-      <button ng-click='showDetails()'>Search</button>
-			<table>
-  			<tr ng-repeat="(key, value) in pokemonInfo">
-	    		<td>{{key}}</td>
-	    		<td>{{value}}</td>
+		<div ng-app="myMVP" ng-controller="myCtrl" class="test"> 
+		  <h1>POKEMON INFO</h1>
+		  <hr style="margin:0px;height:1px;border:0px;background-color:black;color:black;"/>
+		  <br>
+	    <input ng-model="pokemonName" type="text" placeholder="Pokemon name and ID">
+	    <button ng-click='showDetails()'>Search</button>
+	    <br>
+	    <span ng-repeat="picture in pokemonPic"><img src="{{picture}}"/></span>
+		  <table>
+  		  <tr ng-repeat="(key, value) in pokemonInfo  | limitTo : 12">
+	    		<td id="td1">{{key | uppercase}}</td>
+	    		<td id="td2">{{value | uppercase}}</td>
   			</tr>
 			</table>
 		</div>
@@ -34,27 +40,40 @@
 			      data: {data: pokemon}
 			    }).then(function(response){
 			   	console.log(response.data);			   	
-			    $scope.pokemonInfo = response.data;
+			    //helper function
+			    var getAbilitiesName = function(arr) {
+				var output = '';
+					arr.forEach(val => output += val.ability.name + ", ");
+				  return output.slice(0,-2);  
+				}
+
+				var getTypes = function(arr) {
+				  var output = '';
+				  arr.forEach(val => output += val.type.name + ", ");
+				  return output.slice(0,-2);
+				}
+				//get data
+			    var reqBody = response.data;
+			    $scope.pokemonInfo = {
+			      'id': reqBody.id,
+			      'name': reqBody.name,
+			      'weight': reqBody.weight,
+			      'height': reqBody.height,
+			      'types': getTypes(reqBody.types),
+			      'hp': reqBody.stats[5].base_stat,
+			      'attack': reqBody.stats[4].base_stat,
+			      'defense': reqBody.stats[3].base_stat,
+			      'special-attack': reqBody.stats[2].base_stat,
+			      'special-defense': reqBody.stats[1].base_stat,
+			      'speed': reqBody.stats[0].base_stat,
+			      'abilities': getAbilitiesName(reqBody.abilities),
+			    }
+			    var pokemonPictures = [reqBody.sprites.front_default, reqBody.sprites.front_shiny, reqBody.sprites.back_default, reqBody.sprites.back_shiny];
+			    $scope.pokemonPic = pokemonPictures;
+			    console.log(pokemonPictures)
 			   });
 			}
 		}]);
-
-
-
-
-
-
-
-
-
-		// app.controller('myCtrl', ['$scope', '$http', function ($scope, $http) {
-		// 	$scope.showDetails = function() {
-		//     $http.post('http://localhost:8888/', JSON.stringify($scope.pokemonName)).then(function(response){
-		//     	console.log(response);
-		//     }, function(error) {
-		//     	console.log(error);
-		//     });
-		//   }
 	</script>
 
 
@@ -62,8 +81,6 @@
 
 </body>
 </html>
-
-
 
 
 
